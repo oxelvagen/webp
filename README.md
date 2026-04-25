@@ -11,10 +11,10 @@ Det har ar ett fristaende Edge-tillagg som konverterar WEBP och andra bilder til
 
 ## Installera i Edge
 
-1. Oppna `edge://extensions`.
-2. Aktivera `Developer mode`.
-3. Klicka pa `Load unpacked`.
-4. Valj mappen `C:\byggexe_nytt`.
+1. Öppna `edge://extensions`
+2. Aktivera `Developer mode`
+3. Klicka på `Load unpacked`
+4. Välj mappen där tilläggets filer ligger
 
 ## Sa anvander du tillagget
 
