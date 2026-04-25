@@ -2,13 +2,23 @@
   "manifest_version": 3,
   "name": "Bildformat Konverterare",
   "version": "1.0.0",
-  "description": "Konvertera WEBP och andra bilder till PNG, JPG, WEBP eller andra format som Edge stoder.",
+  "description": "Konvertera WEBP och andra bilder till PNG, JPG, WEBP eller andra format som Edge stöder.",
   "permissions": ["activeTab", "contextMenus", "downloads", "scripting"],
   "host_permissions": ["<all_urls>"],
   "background": {
     "service_worker": "service-worker.js"
   },
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
   "action": {
-    "default_title": "Bildformat Konverterare"
+    "default_title": "Bildformat Konverterare",
+    "default_icon": {
+      "16": "icon16.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    }
   }
 }
