@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="sv">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bildformat Konverterare</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="hero-card">
+        <p class="eyebrow">Edge Extension</p>
+        <h1>Bildformat Konverterare</h1>
+        <p class="hero-copy">
+          Konvertera WEBP och andra bilder till PNG, JPG, WEBP eller andra format som din
+          Edge-installation faktiskt stoder.
+        </p>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <h2>Kalla</h2>
+            <p class="panel-copy">Valj en lokal bild eller hamta en bild fran sidan du besoker.</p>
+          </div>
+          <button id="open-page-images" class="ghost-button" type="button">Hamta bilder</button>
+        </div>
+
+        <label id="dropzone" class="dropzone" for="file-input">
+          <input id="file-input" type="file" accept="image/*,.webp">
+          <span class="dropzone-title">Valj lokal bild</span>
+          <span class="dropzone-copy">
+            Dra in en fil eller klicka har. WEBP, PNG, JPG, AVIF och andra
+            webblasarstoddja format brukar fungera.
+          </span>
+        </label>
+
+        <div id="page-images-wrap" class="page-images-wrap is-hidden">
+          <div class="panel-header compact">
+            <h3>Bilder fran aktiv flik</h3>
+            <span id="page-image-count" class="chip">0</span>
+          </div>
+          <div id="page-images" class="page-images"></div>
+        </div>
+
+        <div id="source-meta" class="source-meta is-hidden">
+          <span id="source-badge" class="chip">Ingen kalla vald</span>
+          <span id="image-dimensions" class="chip muted"></span>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header compact">
+          <h2>Forhandsvisning</h2>
+          <span id="status-pill" class="status-pill" data-tone="idle">Redo</span>
+        </div>
+
+        <div class="preview-frame">
+          <img id="preview-image" alt="Forhandsvisning av vald bild">
+          <div id="preview-empty" class="preview-empty">Ingen bild vald annu.</div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Konvertering</h2>
+
+        <div class="field-grid">
+          <label class="field">
+            <span>Malformat</span>
+            <select id="format-select"></select>
+          </label>
+
+          <label class="field">
+            <span>Filnamn</span>
+            <input id="filename-input" type="text" placeholder="bild.png">
+          </label>
+        </div>
+
+        <label id="quality-field" class="field quality-field is-hidden">
+          <div class="quality-row">
+            <span>Kvalitet</span>
+            <output id="quality-value" for="quality-input">0.92</output>
+          </div>
+          <input id="quality-input" type="range" min="0.10" max="1.00" step="0.01" value="0.92">
+        </label>
+
+        <p id="format-note" class="format-note"></p>
+
+        <div class="actions">
+          <button id="download-button" class="primary-button" type="button" disabled>
+            Konvertera och spara
+          </button>
+        </div>
+      </section>
+
+      <section class="panel tip-panel">
+        <h2>Snabbtips</h2>
+        <p>
+          Hogerklicka pa en bild pa en webbsida och valj
+          <strong>Konvertera bild med Bildformat Konverterare</strong>
+          for att skicka den direkt till tillagget.
+        </p>
+      </section>
+
+      <div id="status-message" class="status-message" role="status" aria-live="polite"></div>
+    </main>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
