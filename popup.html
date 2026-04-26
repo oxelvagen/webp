@@ -3,70 +3,198 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bildformat Konverterare</title>
+    <title>Bildverktyg för Edge</title>
     <link rel="stylesheet" href="popup.css">
   </head>
   <body>
     <main class="app-shell">
       <section class="hero-card">
         <p class="eyebrow">Edge Extension</p>
-        <h1>Bildformat Konverterare</h1>
+        <h1>Bildverktyg för Edge</h1>
         <p class="hero-copy">
-          Konvertera WEBP och andra bilder till PNG, JPG, WEBP eller andra format som din
-          Edge-installation faktiskt stoder.
+          Beskär, ändrar storlek, roterar, speglar och konverterar lokala bilder eller bilder
+          från webbsidor direkt i Edge.
         </p>
       </section>
 
       <section class="panel">
         <div class="panel-header">
           <div>
-            <h2>Kalla</h2>
-            <p class="panel-copy">Valj en lokal bild eller hamta en bild fran sidan du besoker.</p>
+            <h2>Källa</h2>
+            <p class="panel-copy">Välj en lokal bild eller hämta en bild från sidan du besöker.</p>
           </div>
-          <button id="open-page-images" class="ghost-button" type="button">Hamta bilder</button>
+          <button id="open-page-images" class="ghost-button" type="button">Hämta bilder</button>
         </div>
 
         <label id="dropzone" class="dropzone" for="file-input">
           <input id="file-input" type="file" accept="image/*,.webp">
-          <span class="dropzone-title">Valj lokal bild</span>
+          <span class="dropzone-title">Välj lokal bild</span>
           <span class="dropzone-copy">
-            Dra in en fil eller klicka har. WEBP, PNG, JPG, AVIF och andra
-            webblasarstoddja format brukar fungera.
+            Dra in en fil eller klicka här. WEBP, PNG, JPG, AVIF och andra
+            webbläsarstödjda format brukar fungera.
           </span>
         </label>
 
         <div id="page-images-wrap" class="page-images-wrap is-hidden">
           <div class="panel-header compact">
-            <h3>Bilder fran aktiv flik</h3>
+            <h3>Bilder från aktiv flik</h3>
             <span id="page-image-count" class="chip">0</span>
           </div>
           <div id="page-images" class="page-images"></div>
         </div>
 
         <div id="source-meta" class="source-meta is-hidden">
-          <span id="source-badge" class="chip">Ingen kalla vald</span>
+          <span id="source-badge" class="chip">Ingen källa vald</span>
           <span id="image-dimensions" class="chip muted"></span>
+          <span id="output-dimensions" class="chip muted is-hidden"></span>
         </div>
       </section>
 
       <section class="panel">
         <div class="panel-header compact">
-          <h2>Forhandsvisning</h2>
+          <h2>Förhandsvisning</h2>
           <span id="status-pill" class="status-pill" data-tone="idle">Redo</span>
         </div>
 
         <div class="preview-frame">
-          <img id="preview-image" alt="Forhandsvisning av vald bild">
-          <div id="preview-empty" class="preview-empty">Ingen bild vald annu.</div>
+          <canvas id="preview-canvas" aria-label="Förhandsvisning av redigerad bild"></canvas>
+          <div id="preview-empty" class="preview-empty">Ingen bild vald ännu.</div>
+        </div>
+
+        <p id="edit-summary" class="panel-copy preview-copy">
+          Förhandsvisningen visar slutresultatet efter dina valda redigeringar.
+        </p>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header compact">
+          <div>
+            <h2>Redigering</h2>
+            <p class="panel-copy">
+              Samma justeringar används i förhandsvisningen och i filen som sparas.
+            </p>
+          </div>
+          <button id="reset-edits" class="ghost-button" type="button" disabled>Återställ</button>
+        </div>
+
+        <div class="edit-grid">
+          <article class="editor-card">
+            <div class="card-header">
+              <label class="switch-row" for="crop-enabled">
+                <span>Beskär</span>
+                <input id="crop-enabled" type="checkbox">
+              </label>
+            </div>
+
+            <div id="crop-controls" class="control-stack is-hidden">
+              <div class="preset-group" id="crop-presets">
+                <button type="button" class="mini-button" data-crop-preset="full">Full bild</button>
+                <button type="button" class="mini-button" data-crop-preset="square">Kvadrat</button>
+                <button type="button" class="mini-button" data-crop-preset="widescreen">16:9</button>
+                <button type="button" class="mini-button" data-crop-preset="portrait">4:5</button>
+              </div>
+
+              <div class="field-grid field-grid-tight">
+                <label class="field">
+                  <span>X</span>
+                  <input id="crop-x" type="number" min="0" step="1" inputmode="numeric">
+                </label>
+
+                <label class="field">
+                  <span>Y</span>
+                  <input id="crop-y" type="number" min="0" step="1" inputmode="numeric">
+                </label>
+
+                <label class="field">
+                  <span>Bredd</span>
+                  <input id="crop-width" type="number" min="1" step="1" inputmode="numeric">
+                </label>
+
+                <label class="field">
+                  <span>Höjd</span>
+                  <input id="crop-height" type="number" min="1" step="1" inputmode="numeric">
+                </label>
+              </div>
+
+              <p class="field-hint">Koordinaterna räknas i pixlar från bildens övre vänstra hörn.</p>
+            </div>
+          </article>
+
+          <article class="editor-card">
+            <div class="card-header">
+              <label class="switch-row" for="resize-enabled">
+                <span>Ändra storlek</span>
+                <input id="resize-enabled" type="checkbox">
+              </label>
+            </div>
+
+            <div id="resize-controls" class="control-stack is-hidden">
+              <div class="preset-group" id="resize-presets">
+                <button type="button" class="mini-button" data-resize-scale="0.25">25%</button>
+                <button type="button" class="mini-button" data-resize-scale="0.50">50%</button>
+                <button type="button" class="mini-button" data-resize-scale="0.75">75%</button>
+                <button type="button" class="mini-button" data-resize-scale="1">100%</button>
+              </div>
+
+              <div class="field-grid field-grid-tight">
+                <label class="field">
+                  <span>Bredd</span>
+                  <input id="resize-width" type="number" min="1" step="1" inputmode="numeric">
+                </label>
+
+                <label class="field">
+                  <span>Höjd</span>
+                  <input id="resize-height" type="number" min="1" step="1" inputmode="numeric">
+                </label>
+              </div>
+
+              <label class="toggle-chip" for="resize-lock">
+                <input id="resize-lock" type="checkbox" checked>
+                <span>Lås proportioner</span>
+              </label>
+
+              <p class="field-hint">Storleken räknas efter eventuell beskärning och rotation.</p>
+            </div>
+          </article>
+
+          <article class="editor-card">
+            <div class="card-header">
+              <h3>Rotation och spegling</h3>
+            </div>
+
+            <div class="control-stack">
+              <label class="field">
+                <span>Rotation</span>
+                <select id="rotation-select">
+                  <option value="0">0 grader</option>
+                  <option value="90">90 grader höger</option>
+                  <option value="180">180 grader</option>
+                  <option value="270">270 grader vänster</option>
+                </select>
+              </label>
+
+              <div class="toggle-row">
+                <label class="toggle-chip" for="flip-x">
+                  <input id="flip-x" type="checkbox">
+                  <span>Spegla horisontellt</span>
+                </label>
+
+                <label class="toggle-chip" for="flip-y">
+                  <input id="flip-y" type="checkbox">
+                  <span>Spegla vertikalt</span>
+                </label>
+              </div>
+            </div>
+          </article>
         </div>
       </section>
 
       <section class="panel">
-        <h2>Konvertering</h2>
+        <h2>Export</h2>
 
         <div class="field-grid">
           <label class="field">
-            <span>Malformat</span>
+            <span>Målformat</span>
             <select id="format-select"></select>
           </label>
 
@@ -84,11 +212,16 @@
           <input id="quality-input" type="range" min="0.10" max="1.00" step="0.01" value="0.92">
         </label>
 
+        <label id="background-field" class="field background-field is-hidden">
+          <span>Bakgrundsfärg för JPG</span>
+          <input id="background-color" type="color" value="#ffffff">
+        </label>
+
         <p id="format-note" class="format-note"></p>
 
         <div class="actions">
           <button id="download-button" class="primary-button" type="button" disabled>
-            Konvertera och spara
+            Redigera, konvertera och spara
           </button>
         </div>
       </section>
@@ -96,9 +229,9 @@
       <section class="panel tip-panel">
         <h2>Snabbtips</h2>
         <p>
-          Hogerklicka pa en bild pa en webbsida och valj
-          <strong>Konvertera bild med Bildformat Konverterare</strong>
-          for att skicka den direkt till tillagget.
+          Högerklicka på en bild på en webbsida och välj
+          <strong>Redigera bild med Bildverktyg för Edge</strong>
+          för att öppna den direkt i verktyget.
         </p>
       </section>
 
