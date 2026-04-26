@@ -1,13 +1,20 @@
-# Bildformat Konverterare for Edge
+# Bildverktyg för Edge
 
-Det har ar ett fristaende Edge-tillagg som konverterar WEBP och andra bilder till valbart utformat direkt i webblasaren.
+Ett fristående Edge-tillägg för snabb bildredigering direkt i webbläsaren. Du kan beskära, ändra storlek, rotera, spegla och konvertera bilder utan att lämna sidan.
+
+## Översikt
+
+Bildverktyg för Edge fungerar både med lokala bildfiler och bilder som hämtas från den aktiva fliken. Tillägget visar en live-förhandsvisning av resultatet och använder samma redigeringar när bilden exporteras.
 
 ## Funktioner
 
-- Konverterar lokala bilder till `PNG`, `JPG`, `WEBP` och andra format som den installerade Edge-versionen stoder.
-- Hamtar bilder fran den aktiva fliken och later dig spara dem i ett nytt format.
-- Lagger till en hoger-klicksmeny pa bilder: `Konvertera bild med Bildformat Konverterare`.
-- Visar forhandsgranskning, bilddimensioner och kvalitetsreglage for komprimerade format.
+- Beskär bilder manuellt med pixelvärden eller snabba förval som `Kvadrat`, `16:9` och `4:5`
+- Ändra storlek med exakt bredd och höjd eller snabbskalor som `25%`, `50%`, `75%` och `100%`
+- Rotera och spegla innan export
+- Konvertera till `PNG`, `JPG`, `WEBP` och `AVIF` när formatet stöds av den installerade Edge-versionen
+- Välj bakgrundsfärg för `JPG`-export när transparens behöver fyllas ut
+- Hämta bilder direkt från den aktiva fliken
+- Högerklicka på en bild och öppna den direkt i tillägget
 
 ## Installera i Edge
 
@@ -16,33 +23,41 @@ Det har ar ett fristaende Edge-tillagg som konverterar WEBP och andra bilder til
 3. Klicka på `Load unpacked`
 4. Välj mappen där tilläggets filer ligger
 
-## Sa anvander du tillagget
+## Användning
 
 ### Lokal bild
 
-1. Klicka pa tillaggsikonen i Edge.
-2. Tillagget oppnas i en ny flik.
-3. Valj eller dra in en bildfil.
-4. Valj malformat.
-5. Klicka pa `Konvertera och spara`.
+1. Klicka på tilläggsikonen i Edge
+2. Välj eller dra in en lokal bild
+3. Justera beskärning, storlek, rotation eller spegling
+4. Välj målformat och eventuellt kvalitetsläge
+5. Spara den färdiga bilden
 
-### Bild fran webbsida
+### Bild från webbsida
 
-1. Oppna en vanlig webbsida med bilder.
-2. Klicka pa tillaggsikonen.
-3. Tillagget oppnas i en ny flik.
-4. Klicka pa `Hamta bilder`.
-5. Valj bilden du vill konvertera.
-6. Valj format och spara.
+1. Öppna en sida med bilder i Edge
+2. Klicka på tilläggsikonen
+3. Tryck på `Hämta bilder`
+4. Välj den bild du vill redigera
+5. Justera inställningarna och exportera
 
-### Hogerklick pa bild
+### Högerklick på bild
 
-1. Hogerklicka pa en bild pa en webbsida.
-2. Valj `Konvertera bild med Bildformat Konverterare`.
-3. Tillagget oppnas med bilden redan laddad.
+1. Högerklicka på en bild på en webbsida
+2. Välj `Redigera bild med Bildverktyg för Edge`
+3. Bilden öppnas direkt i verktyget för vidare redigering
 
-## Viktigt att veta
+## Format och export
 
-- Tillagget begar bred webbatskomst (`<all_urls>`) for att kunna hamta bilder fran olika webbplatser.
-- Om du konverterar till `JPG` ersatts transparens med vit bakgrund.
-- Animerade `WEBP`-filer sparas som en enskild bildruta nar de ritas till canvas.
+| Format | När det passar |
+| --- | --- |
+| `PNG` | När du vill behålla transparens och bred kompatibilitet |
+| `JPG` | När du vill ha mindre filer och kan använda bakgrundsfärg |
+| `WEBP` | När du vill ha bra balans mellan kvalitet och filstorlek |
+| `AVIF` | När du vill pressa filstorleken ytterligare och stödet finns |
+
+## Att tänka på
+
+- Tillägget använder `<all_urls>` för att kunna läsa bilder från olika webbplatser
+- Vid export till `JPG` ersätts transparens med den bakgrundsfärg du har valt
+- Animerade `WEBP`-filer exporteras som en enskild bildruta när de ritas till canvas
