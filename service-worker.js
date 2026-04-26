@@ -28,7 +28,7 @@ function createContextMenu() {
   chrome.contextMenus.removeAll(() => {
     chrome.contextMenus.create({
       id: CONTEXT_MENU_ID,
-      title: "Konvertera bild med Bildformat Konverterare",
+      title: "Redigera bild med Bildverktyg för Edge",
       contexts: ["image"]
     });
   });
